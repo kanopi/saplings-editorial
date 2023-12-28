@@ -1,0 +1,30 @@
+{
+    "name": "kanopi/saplings-editorial",
+    "description": "Configures a rich editing experience for modern Drupal.",
+    "type": "drupal-recipe",
+    "license": "GPL-2.0-or-later",
+    "authors": [
+        {
+            "name": "Jim Birch",
+            "homepage": "https://kanopi.com",
+            "role": "Maintainer"
+        }
+    ],
+    "require": {
+        "drupal/access_unpublished": "^1.5",
+        "drupal/allowed_formats": "^3.0",
+        "drupal/editor_advanced_link": "^2.0",
+        "drupal/field_group": "^3.1",
+        "drupal/linkit": "^6.1",
+        "drupal/nomarkup": "^1.0",
+        "drupal/quick_node_clone": "^1.16",
+        "drupal/responsive_tables_filter": "^1.18",
+        "drupal/view_unpublished": "^1.1"
+    },
+    "suggest": {
+        "kanopi/gin-admin-experience": "A simple Drupal Recipe for installing and configuring the Gin admin theme and supporting base modules.",
+        "kanopi/saplings-base": "Simple base configuration for modern Drupal.",
+        "kanopi/saplings-media": "Configures media defaults for modern Drupal.",
+        "kanopi/saplings-launch": "Configures best practices for launching modern Drupal."
+    }
+}

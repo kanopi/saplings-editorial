@@ -1,0 +1,25 @@
+name: 'Saplings - Editorial'
+description: 'Configures a rich editing experience for modern Drupal.'
+type: 'Site'
+install:
+  # Core.
+  - ckeditor5
+  - editor
+  - media
+  - node
+  # Contrib.
+  - access_unpublished
+  - allowed_formats
+  - editor_advanced_link
+  - field_group
+  - linkit
+  - nomarkup
+  - quick_node_clone
+  - responsive_tables_filter
+  - view_unpublished
+config:
+  import:
+    access_unpublished: '*'
+    linkit: '*'
+    quick_node_clone: '*'
+    responsive_tables_filter: '*'
