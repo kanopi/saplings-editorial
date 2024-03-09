@@ -7,6 +7,7 @@ install:
   - editor
   - media
   - node
+  - tour
   # Contrib.
   - access_unpublished
   - allowed_formats
