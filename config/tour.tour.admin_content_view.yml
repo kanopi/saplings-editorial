@@ -1,0 +1,52 @@
+langcode: en
+status: true
+dependencies:
+  module:
+    - system
+id: admin_content_view
+label: 'Admin Content View'
+module: system
+routes:
+  -
+    route_name: system.admin_content
+tips:
+  add-content:
+    id: add-content
+    plugin: text
+    label: 'Add content'
+    weight: -100
+    position: auto
+    selector: '#block-gin-local-actions'
+    body: 'Use this button to add new content.'
+  filtering-options:
+    id: filtering-options
+    plugin: text
+    label: 'Filtering options'
+    weight: -99
+    position: auto
+    selector: '#views-exposed-form-content-page-1'
+    body: 'Use these fields to search the content list. You can search by entering Title text or using the dropdowns to select a Content Type, Published Status, and Language. You can combine these filters to get more specific results. After choosing your filters, hit the "Filter" button to see your results.'
+  sorting-options:
+    id: sorting-options
+    plugin: text
+    label: 'Sorting options'
+    weight: -98
+    position: auto
+    selector: .views-form__bulk-operations-row
+    body: 'Users can additionally use the table headers to sort the content view. If the column heading has an icon beside it (ex. three horizontal lines or an arrow) you can click on that header to sort the results by that column. Clicking an active column will change the sorting query (ascending vs descending).'
+  operations:
+    id: operations
+    plugin: text
+    label: Operations
+    weight: -97
+    position: auto
+    selector: '#view-operations-table-column'
+    body: 'Each content item has operations that can be individually performed on them, including Edit, Delete, and Clone'
+  mass-actions:
+    id: mass-actions
+    plugin: text
+    label: 'Mass actions'
+    weight: -96
+    position: auto
+    selector: '#edit-bulk-actions-container'
+    body: 'Use the checkboxes to the left of each content item to select the desired items, then use this dropdown to perform actions on every selected item. Some actions include deleting, publishing, and saving content.'
