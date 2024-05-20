@@ -10,7 +10,6 @@ install:
   - tour
   # Contrib.
   - access_unpublished
-  - allowed_formats
   - editor_advanced_link
   - linkit
   - nomarkup
