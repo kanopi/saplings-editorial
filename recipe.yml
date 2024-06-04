@@ -3,6 +3,7 @@ description: 'Configures a rich editing experience for modern Drupal.'
 type: 'Site'
 install:
   # Core.
+  - contextual
   - ckeditor5
   - editor
   - media
@@ -22,3 +23,9 @@ config:
     linkit: '*'
     quick_node_clone: '*'
     responsive_tables_filter: '*'
+  actions:
+    user.role.content_editor:
+      ensure_exists:
+        id: content_editor
+      grantPermissions:
+        - 'access contextual links'
