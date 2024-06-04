@@ -12,7 +12,6 @@
     ],
     "require": {
         "drupal/access_unpublished": "^1.5",
-        "drupal/allowed_formats": "^3.0",
         "drupal/editor_advanced_link": "^2.0",
         "drupal/linkit": "^6.1",
         "drupal/nomarkup": "^1.0",
