@@ -1,19 +1,11 @@
 # Saplings Editorial
 
-## Overview
+Configures a rich editing experience for modern Drupal.
 
-Welcome to the Saplings Editorial repository! This repository focuses on user roles, CKEditor configurations, and admin configurations and dependencies within the Saplings application.
-
-## Features
-
-- Manages user roles and permissions for editorial tasks.
-- Configures CKEditor to provide rich text editing capabilities.
-- Handles admin configurations and dependencies related to editorial workflows.
-
-## Getting Started
-
-To start using Saplings Editorial, follow these steps:
-
-1. Clone the repository:
-   ```bash
-   git clone https://github.com/kanopi/saplings-editorial.git
+* Requires core's Administrator and Content editor role recipes.
+* Creates a Linkit profile.
+* Configures CKEditor.
+* Create the admin content view.
+* Creates a tour for the admin content screen.
+* Installs Access Unpublished. Permissions set on individual entity recipes.
+* Installs Quick Node Clone.

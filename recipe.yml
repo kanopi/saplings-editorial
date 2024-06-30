@@ -1,31 +1,875 @@
 name: 'Saplings - Editorial'
 description: 'Configures a rich editing experience for modern Drupal.'
 type: 'Site'
+recipes:
+  - core/recipes/administrator_role
+  - core/recipes/content_editor_role
 install:
   # Core.
   - contextual
   - ckeditor5
   - editor
-  - media
   - node
-  - tour
+  - media_library
+  - views
   # Contrib.
   - access_unpublished
   - editor_advanced_link
   - linkit
-  - nomarkup
   - quick_node_clone
   - responsive_tables_filter
+  - tour
   - view_unpublished
 config:
   import:
-    access_unpublished: '*'
     linkit: '*'
-    quick_node_clone: '*'
-    responsive_tables_filter: '*'
   actions:
+    # Add some permissions to the Content editor role.
     user.role.content_editor:
       ensure_exists:
         id: content_editor
       grantPermissions:
+        - 'access content overview'
         - 'access contextual links'
+        - 'view any unpublished content'
+    # Add the a Linkit profile.
+    linkit.linkit_profile.saplings_default:
+      ensure_exists:
+        label: Saplings Linkit default
+        id: saplings_default
+        description: 'A default Linkit profile'
+        matchers:
+          9e9c3670-8480-4b0f-aaf6-bdecf4a36ed7:
+            id: 'entity:node'
+            uuid: 9e9c3670-8480-4b0f-aaf6-bdecf4a36ed7
+            settings:
+              metadata: '[node:content-type:name] #[node:nid] | [node:created:medium] by [node:author]'
+              bundles: {  }
+              group_by_bundle: false
+              include_unpublished: false
+              substitution_type: canonical
+              limit: 100
+            weight: 0
+    # Add a Full HTML Filter format.
+    filter.format.full_html:
+      ensure_exists:
+        name: 'Full HTML'
+        format: full_html
+        weight: 0
+        filters:
+          filter_align:
+            id: filter_align
+            provider: filter
+            status: true
+            weight: 0
+            settings: {  }
+          filter_autop:
+            id: filter_autop
+            provider: filter
+            status: true
+            weight: 0
+            settings: {  }
+          filter_html:
+            id: filter_html
+            provider: filter
+            status: true
+            weight: -10
+            settings:
+              allowed_html: '<br> <p class="author aside text-align-left text-align-center text-align-right text-align-justify"> <h2 class="text-align-left text-align-center text-align-right text-align-justify"> <h3 class="text-align-left text-align-center text-align-right text-align-justify"> <h4 class="text-align-left text-align-center text-align-right text-align-justify"> <h5 class="text-align-left text-align-center text-align-right text-align-justify"> <h6 class="text-align-left text-align-center text-align-right text-align-justify"> <a class href aria-label title id target="_blank" data-entity-type data-entity-uuid data-entity-substitution> <blockquote class="blockquote"> <strong> <em> <u> <code> <s> <sub> <sup> <ul> <ol reversed start> <li> <table> <tr> <td rowspan colspan> <th rowspan colspan> <thead> <tbody> <tfoot> <caption> <drupal-media data-entity-type data-entity-uuid alt data-align>'
+              filter_html_help: true
+              filter_html_nofollow: false
+          filter_html_image_secure:
+            id: filter_html_image_secure
+            provider: filter
+            status: true
+            weight: 9
+            settings: {  }
+          filter_image_lazy_load:
+            id: filter_image_lazy_load
+            provider: filter
+            status: true
+            weight: 15
+            settings: {  }
+          filter_responsive_tables_filter:
+            id: filter_responsive_tables_filter
+            provider: responsive_tables_filter
+            status: true
+            weight: 0
+            settings:
+              tablesaw_type: stack
+              tablesaw_persist: '1'
+          filter_url:
+            id: filter_url
+            provider: filter
+            status: true
+            weight: 0
+            settings:
+              filter_url_length: 72
+          linkit:
+            id: linkit
+            provider: linkit
+            status: true
+            weight: 0
+            settings:
+              title: true
+          media_embed:
+            id: media_embed
+            provider: media
+            status: true
+            weight: 100
+            settings:
+              default_view_mode: default
+              allowed_view_modes: {  }
+              allowed_media_types: {  }
+    # Add a Full HTML Editor.
+    editor.editor.full_html:
+      ensure_exists:
+        format: full_html
+        editor: ckeditor5
+        settings:
+          toolbar:
+            items:
+              - undo
+              - redo
+              - heading
+              - style
+              - bold
+              - underline
+              - italic
+              - strikethrough
+              - code
+              - subscript
+              - superscript
+              - blockQuote
+              - link
+              - indent
+              - outdent
+              - bulletedList
+              - numberedList
+              - alignment
+              - removeFormat
+              - insertTable
+              - drupalMedia
+              - sourceEditing
+          plugins:
+            ckeditor5_alignment:
+              enabled_alignments:
+                - center
+                - justify
+                - left
+                - right
+            ckeditor5_heading:
+              enabled_headings:
+                - heading2
+                - heading3
+                - heading4
+                - heading5
+                - heading6
+            ckeditor5_list:
+              properties:
+                reversed: true
+                startIndex: true
+              multiBlock: true
+            ckeditor5_sourceEditing:
+              allowed_tags: {  }
+            ckeditor5_style:
+              styles:
+                -
+                  label: 'Primary Button'
+                  element: '<a class="btn btn-primary">'
+                -
+                  label: 'Secondary Button'
+                  element: '<a class="btn btn-secondary">'
+                -
+                  label: Blockquote
+                  element: '<blockquote class="blockquote">'
+                -
+                  label: 'Blockquote Author'
+                  element: '<p class="author">'
+                -
+                  label: Aside
+                  element: '<p class="aside">'
+            editor_advanced_link_link:
+              enabled_attributes:
+                - aria-label
+                - class
+                - id
+                - target
+                - title
+            linkit_extension:
+              linkit_enabled: true
+              linkit_profile: saplings_default
+            media_media:
+              allow_view_mode_override: false
+        image_upload:
+          status: false
+    # Add the Admin Content view.
+    views.view.content:
+      ensure_exists:
+        id: content
+        label: Content
+        module: node
+        description: 'Find and manage content.'
+        tag: default
+        base_table: node_field_data
+        base_field: nid
+        display:
+          default:
+            id: default
+            display_title: Default
+            display_plugin: default
+            position: 0
+            display_options:
+              title: Content
+              fields:
+                node_bulk_form:
+                  id: node_bulk_form
+                  table: node
+                  field: node_bulk_form
+                  entity_type: node
+                  plugin_id: node_bulk_form
+                  label: ''
+                  exclude: false
+                  alter:
+                    alter_text: false
+                  element_class: ''
+                  element_default_classes: true
+                  empty: ''
+                  hide_empty: false
+                  empty_zero: false
+                  hide_alter_empty: true
+                title:
+                  id: title
+                  table: node_field_data
+                  field: title
+                  entity_type: node
+                  entity_field: title
+                  plugin_id: field
+                  label: Title
+                  exclude: false
+                  alter:
+                    alter_text: false
+                  element_class: ''
+                  element_default_classes: true
+                  empty: ''
+                  hide_empty: false
+                  empty_zero: false
+                  hide_alter_empty: true
+                  type: string
+                  settings:
+                    link_to_entity: true
+                type:
+                  id: type
+                  table: node_field_data
+                  field: type
+                  relationship: none
+                  group_type: group
+                  admin_label: ''
+                  entity_type: node
+                  entity_field: type
+                  plugin_id: field
+                  label: 'Content type'
+                  exclude: false
+                  alter:
+                    alter_text: false
+                    text: ''
+                    make_link: false
+                    path: ''
+                    absolute: false
+                    external: false
+                    replace_spaces: false
+                    path_case: none
+                    trim_whitespace: false
+                    alt: ''
+                    rel: ''
+                    link_class: ''
+                    prefix: ''
+                    suffix: ''
+                    target: ''
+                    nl2br: false
+                    max_length: 0
+                    word_boundary: true
+                    ellipsis: true
+                    more_link: false
+                    more_link_text: ''
+                    more_link_path: ''
+                    strip_tags: false
+                    trim: false
+                    preserve_tags: ''
+                    html: false
+                  element_type: ''
+                  element_class: ''
+                  element_label_type: ''
+                  element_label_class: ''
+                  element_label_colon: true
+                  element_wrapper_type: ''
+                  element_wrapper_class: ''
+                  element_default_classes: true
+                  empty: ''
+                  hide_empty: false
+                  empty_zero: false
+                  hide_alter_empty: true
+                  click_sort_column: target_id
+                  type: entity_reference_label
+                  settings:
+                    link: false
+                  group_column: target_id
+                  group_columns: {  }
+                  group_rows: true
+                  delta_limit: 0
+                  delta_offset: 0
+                  delta_reversed: false
+                  delta_first_last: false
+                  multi_type: separator
+                  separator: ', '
+                  field_api_classes: false
+                name:
+                  id: name
+                  table: users_field_data
+                  field: name
+                  relationship: uid
+                  entity_type: user
+                  entity_field: name
+                  plugin_id: field
+                  label: Author
+                  exclude: false
+                  alter:
+                    alter_text: false
+                  element_class: ''
+                  element_default_classes: true
+                  empty: ''
+                  hide_empty: false
+                  empty_zero: false
+                  hide_alter_empty: true
+                  type: user_name
+                status:
+                  id: status
+                  table: node_field_data
+                  field: status
+                  entity_type: node
+                  entity_field: status
+                  plugin_id: field
+                  label: Status
+                  exclude: false
+                  alter:
+                    alter_text: false
+                  element_class: ''
+                  element_default_classes: true
+                  empty: ''
+                  hide_empty: false
+                  empty_zero: false
+                  hide_alter_empty: true
+                  type: boolean
+                  settings:
+                    format: custom
+                    format_custom_false: Unpublished
+                    format_custom_true: Published
+                changed:
+                  id: changed
+                  table: node_field_data
+                  field: changed
+                  entity_type: node
+                  entity_field: changed
+                  plugin_id: field
+                  label: Updated
+                  exclude: false
+                  alter:
+                    alter_text: false
+                  element_class: ''
+                  element_default_classes: true
+                  empty: ''
+                  hide_empty: false
+                  empty_zero: false
+                  hide_alter_empty: true
+                  type: timestamp
+                  settings:
+                    date_format: short
+                    custom_date_format: ''
+                    timezone: ''
+                    tooltip:
+                      date_format: long
+                      custom_date_format: ''
+                    time_diff:
+                      enabled: false
+                      future_format: '@interval hence'
+                      past_format: '@interval ago'
+                      granularity: 2
+                      refresh: 60
+                operations:
+                  id: operations
+                  table: node
+                  field: operations
+                  relationship: none
+                  group_type: group
+                  admin_label: ''
+                  plugin_id: entity_operations
+                  label: Operations
+                  exclude: false
+                  alter:
+                    alter_text: false
+                    text: ''
+                    make_link: false
+                    path: ''
+                    absolute: false
+                    external: false
+                    replace_spaces: false
+                    path_case: none
+                    trim_whitespace: false
+                    alt: ''
+                    rel: ''
+                    link_class: ''
+                    prefix: ''
+                    suffix: ''
+                    target: ''
+                    nl2br: false
+                    max_length: 0
+                    word_boundary: true
+                    ellipsis: true
+                    more_link: false
+                    more_link_text: ''
+                    more_link_path: ''
+                    strip_tags: false
+                    trim: false
+                    preserve_tags: ''
+                    html: false
+                  element_type: ''
+                  element_class: ''
+                  element_label_type: ''
+                  element_label_class: ''
+                  element_label_colon: true
+                  element_wrapper_type: ''
+                  element_wrapper_class: ''
+                  element_default_classes: true
+                  empty: ''
+                  hide_empty: false
+                  empty_zero: false
+                  hide_alter_empty: true
+                  destination: true
+              pager:
+                type: full
+                options:
+                  items_per_page: 50
+                  tags:
+                    next: 'Next ›'
+                    previous: '‹ Previous'
+                    first: '« First'
+                    last: 'Last »'
+              exposed_form:
+                type: basic
+                options:
+                  submit_button: Filter
+                  reset_button: true
+                  reset_button_label: Reset
+                  exposed_sorts_label: 'Sort by'
+                  expose_sort_order: true
+                  sort_asc_label: Asc
+                  sort_desc_label: Desc
+              access:
+                type: perm
+                options:
+                  perm: 'access content overview'
+              cache:
+                type: tag
+              empty:
+                area_text_custom:
+                  id: area_text_custom
+                  table: views
+                  field: area_text_custom
+                  plugin_id: text_custom
+                  empty: true
+                  content: 'No content available.'
+              sorts: {  }
+              arguments: {  }
+              filters:
+                title:
+                  id: title
+                  table: node_field_data
+                  field: title
+                  relationship: none
+                  group_type: group
+                  admin_label: ''
+                  entity_type: node
+                  entity_field: title
+                  plugin_id: string
+                  operator: contains
+                  value: ''
+                  group: 1
+                  exposed: true
+                  expose:
+                    operator_id: title_op
+                    label: Title
+                    description: ''
+                    use_operator: false
+                    operator: title_op
+                    operator_limit_selection: false
+                    operator_list: {  }
+                    identifier: title
+                    required: false
+                    remember: false
+                    multiple: false
+                    remember_roles:
+                      authenticated: authenticated
+                      anonymous: '0'
+                      administrator: '0'
+                  is_grouped: false
+                  group_info:
+                    label: ''
+                    description: ''
+                    identifier: ''
+                    optional: true
+                    widget: select
+                    multiple: false
+                    remember: false
+                    default_group: All
+                    default_group_multiple: {  }
+                    group_items: {  }
+                type:
+                  id: type
+                  table: node_field_data
+                  field: type
+                  relationship: none
+                  group_type: group
+                  admin_label: ''
+                  entity_type: node
+                  entity_field: type
+                  plugin_id: bundle
+                  operator: in
+                  value: {  }
+                  group: 1
+                  exposed: true
+                  expose:
+                    operator_id: type_op
+                    label: 'Content type'
+                    description: ''
+                    use_operator: false
+                    operator: type_op
+                    operator_limit_selection: false
+                    operator_list: {  }
+                    identifier: type
+                    required: false
+                    remember: false
+                    multiple: false
+                    remember_roles:
+                      authenticated: authenticated
+                      anonymous: '0'
+                      administrator: '0'
+                    reduce: false
+                  is_grouped: false
+                  group_info:
+                    label: ''
+                    description: ''
+                    identifier: ''
+                    optional: true
+                    widget: select
+                    multiple: false
+                    remember: false
+                    default_group: All
+                    default_group_multiple: {  }
+                    group_items: {  }
+                status:
+                  id: status
+                  table: node_field_data
+                  field: status
+                  relationship: none
+                  group_type: group
+                  admin_label: ''
+                  entity_type: node
+                  entity_field: status
+                  plugin_id: boolean
+                  operator: '='
+                  value: '1'
+                  group: 1
+                  exposed: true
+                  expose:
+                    operator_id: ''
+                    label: Status
+                    description: ''
+                    use_operator: false
+                    operator: status_op
+                    operator_limit_selection: false
+                    operator_list: {  }
+                    identifier: status
+                    required: false
+                    remember: false
+                    multiple: false
+                    remember_roles:
+                      authenticated: authenticated
+                  is_grouped: true
+                  group_info:
+                    label: 'Published status'
+                    description: ''
+                    identifier: status
+                    optional: true
+                    widget: select
+                    multiple: false
+                    remember: false
+                    default_group: All
+                    default_group_multiple: {  }
+                    group_items:
+                      1:
+                        title: Published
+                        operator: '='
+                        value: '1'
+                      2:
+                        title: Unpublished
+                        operator: '='
+                        value: '0'
+                langcode:
+                  id: langcode
+                  table: node_field_data
+                  field: langcode
+                  relationship: none
+                  group_type: group
+                  admin_label: ''
+                  entity_type: node
+                  entity_field: langcode
+                  plugin_id: language
+                  operator: in
+                  value: {  }
+                  group: 1
+                  exposed: true
+                  expose:
+                    operator_id: langcode_op
+                    label: Language
+                    description: ''
+                    use_operator: false
+                    operator: langcode_op
+                    operator_limit_selection: false
+                    operator_list: {  }
+                    identifier: langcode
+                    required: false
+                    remember: false
+                    multiple: false
+                    remember_roles:
+                      authenticated: authenticated
+                      anonymous: '0'
+                      administrator: '0'
+                    reduce: false
+                  is_grouped: false
+                  group_info:
+                    label: ''
+                    description: ''
+                    identifier: ''
+                    optional: true
+                    widget: select
+                    multiple: false
+                    remember: false
+                    default_group: All
+                    default_group_multiple: {  }
+                    group_items: {  }
+                status_extra:
+                  id: status_extra
+                  table: node_field_data
+                  field: status_extra
+                  entity_type: node
+                  plugin_id: node_status
+                  operator: '='
+                  value: false
+                  group: 1
+                  expose:
+                    operator_limit_selection: false
+                    operator_list: {  }
+              filter_groups:
+                operator: AND
+                groups:
+                  1: AND
+              style:
+                type: table
+                options:
+                  grouping: {  }
+                  row_class: ''
+                  default_row_class: true
+                  columns:
+                    node_bulk_form: node_bulk_form
+                    title: title
+                    type: type
+                    name: name
+                    status: status
+                    changed: changed
+                    edit_node: edit_node
+                    delete_node: delete_node
+                    dropbutton: dropbutton
+                    timestamp: title
+                  default: changed
+                  info:
+                    node_bulk_form:
+                      align: ''
+                      separator: ''
+                      empty_column: false
+                      responsive: ''
+                    title:
+                      sortable: true
+                      default_sort_order: asc
+                      align: ''
+                      separator: ''
+                      empty_column: false
+                      responsive: ''
+                    type:
+                      sortable: true
+                      default_sort_order: asc
+                      align: ''
+                      separator: ''
+                      empty_column: false
+                      responsive: ''
+                    name:
+                      sortable: false
+                      default_sort_order: asc
+                      align: ''
+                      separator: ''
+                      empty_column: false
+                      responsive: priority-low
+                    status:
+                      sortable: true
+                      default_sort_order: asc
+                      align: ''
+                      separator: ''
+                      empty_column: false
+                      responsive: ''
+                    changed:
+                      sortable: true
+                      default_sort_order: desc
+                      align: ''
+                      separator: ''
+                      empty_column: false
+                      responsive: priority-low
+                    edit_node:
+                      sortable: false
+                      default_sort_order: asc
+                      align: ''
+                      separator: ''
+                      empty_column: false
+                      responsive: ''
+                    delete_node:
+                      sortable: false
+                      default_sort_order: asc
+                      align: ''
+                      separator: ''
+                      empty_column: false
+                      responsive: ''
+                    dropbutton:
+                      sortable: false
+                      default_sort_order: asc
+                      align: ''
+                      separator: ''
+                      empty_column: false
+                      responsive: ''
+                    timestamp:
+                      sortable: false
+                      default_sort_order: asc
+                      align: ''
+                      separator: ''
+                      empty_column: false
+                      responsive: ''
+                  override: true
+                  sticky: true
+                  summary: ''
+                  empty_table: true
+                  caption: ''
+                  description: ''
+              row:
+                type: fields
+              query:
+                type: views_query
+              relationships:
+                uid:
+                  id: uid
+                  table: node_field_data
+                  field: uid
+                  admin_label: author
+                  plugin_id: standard
+                  required: true
+              show_admin_links: false
+              display_extenders: {  }
+            cache_metadata:
+              max-age: 0
+              contexts:
+                - 'languages:language_content'
+                - 'languages:language_interface'
+                - url
+                - url.query_args
+                - user
+                - 'user.node_grants:view'
+                - user.permissions
+              tags: {  }
+          page_1:
+            id: page_1
+            display_title: Page
+            display_plugin: page
+            position: 1
+            display_options:
+              display_extenders: {  }
+              path: admin/content/node
+              menu:
+                type: 'default tab'
+                title: Content
+                description: ''
+                weight: -10
+                menu_name: admin
+                context: ''
+              tab_options:
+                type: normal
+                title: Content
+                description: 'Find and manage content'
+                weight: -10
+                menu_name: admin
+            cache_metadata:
+              max-age: 0
+              contexts:
+                - 'languages:language_content'
+                - 'languages:language_interface'
+                - url
+                - url.query_args
+                - user
+                - 'user.node_grants:view'
+                - user.permissions
+              tags: {  }
+    # Add a tour for the admin content view.
+    tour.tour.admin_content_view:
+      ensure_exists:
+        id: admin_content_view
+        label: 'Admin Content View'
+        module: system
+        routes:
+          -
+            route_name: system.admin_content
+        tips:
+          add-content:
+            id: add-content
+            plugin: text
+            label: 'Add content'
+            weight: -100
+            position: auto
+            selector: '#block-gin-local-actions'
+            body: 'Use this button to add new content.'
+          filtering-options:
+            id: filtering-options
+            plugin: text
+            label: 'Filtering options'
+            weight: -99
+            position: auto
+            selector: '#views-exposed-form-content-page-1'
+            body: 'Use these fields to search the content list. You can search by entering Title text or using the dropdowns to select a Content Type, Published Status, and Language. You can combine these filters to get more specific results. After choosing your filters, hit the "Filter" button to see your results.'
+          sorting-options:
+            id: sorting-options
+            plugin: text
+            label: 'Sorting options'
+            weight: -98
+            position: auto
+            selector: .views-form__bulk-operations-row
+            body: 'Users can additionally use the table headers to sort the content view. If the column heading has an icon beside it (ex. three horizontal lines or an arrow) you can click on that header to sort the results by that column. Clicking an active column will change the sorting query (ascending vs descending).'
+          operations:
+            id: operations
+            plugin: text
+            label: Operations
+            weight: -97
+            position: auto
+            selector: '#view-operations-table-column'
+            body: 'Each content item has operations that can be individually performed on them, including Edit, Delete, and Clone'
+          mass-actions:
+            id: mass-actions
+            plugin: text
+            label: 'Mass actions'
+            weight: -96
+            position: auto
+            selector: '#edit-bulk-actions-container'
+            body: 'Use the checkboxes to the left of each content item to select the desired items, then use this dropdown to perform actions on every selected item. Some actions include deleting, publishing, and saving content.'

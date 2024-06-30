@@ -18,11 +18,5 @@
         "drupal/quick_node_clone": "^1.16",
         "drupal/responsive_tables_filter": "^1.18",
         "drupal/view_unpublished": "^1.1"
-    },
-    "suggest": {
-        "kanopi/gin-admin-experience": "A simple Drupal Recipe for installing and configuring the Gin admin theme and supporting base modules.",
-        "kanopi/saplings-base": "Simple base configuration for modern Drupal.",
-        "kanopi/saplings-media": "Configures media defaults for modern Drupal.",
-        "kanopi/saplings-launch": "Configures best practices for launching modern Drupal."
     }
 }
