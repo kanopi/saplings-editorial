@@ -13,6 +13,7 @@
     "require": {
         "drupal/access_unpublished": "^1.5",
         "drupal/editor_advanced_link": "^2.0",
+        "drupal/frontend_editing": "*",
         "drupal/linkit": "^6.1",
         "drupal/nomarkup": "^1.0",
         "drupal/quick_node_clone": "^1.16",
