@@ -9,6 +9,7 @@ install:
   - contextual
   - ckeditor5
   - editor
+  - frontend_editing
   - node
   - media_library
   - views
