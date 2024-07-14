@@ -14,7 +14,7 @@
         "drupal/access_unpublished": "^1.5",
         "drupal/editor_advanced_link": "^2.0",
         "drupal/frontend_editing": "*",
-        "drupal/linkit": "^6.1",
+        "drupal/linkit": "^7.0@alpha",
         "drupal/nomarkup": "^1.0",
         "drupal/quick_node_clone": "^1.16",
         "drupal/responsive_tables_filter": "^1.18",
