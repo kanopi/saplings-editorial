@@ -22,6 +22,7 @@ install:
   - linkit
   - quick_node_clone
   - responsive_tables_filter
+  - sam
   - tour
   - view_unpublished
 config:
