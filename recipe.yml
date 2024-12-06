@@ -4,31 +4,24 @@ type: 'Site'
 recipes:
   - core/recipes/administrator_role
   - core/recipes/content_editor_role
+  - saplings-full-html-editor
 install:
   # Core.
   - contextual
-  - ckeditor5
-  - editor
   - node
-  - media
-  - media_library
   - views
   # Contrib.
   - access_unpublished
-  - editor_advanced_link
   - environment_indicator
   - environment_indicator_ribbon
   - frontend_editing
-  - linkit
   - quick_node_clone
-  - responsive_tables_filter
   - sam
   - tour
   - view_unpublished
 config:
   strict: false
   import:
-    linkit: '*'
     node:
       - views.view.content
   actions:
