@@ -13,7 +13,6 @@ install:
   # Contrib.
   - access_unpublished
   - environment_indicator
-  - frontend_editing
   - quick_node_clone
   - sam
   - tour
