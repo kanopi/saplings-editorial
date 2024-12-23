@@ -16,6 +16,7 @@ install:
   - quick_node_clone
   - sam
   - tour
+  - trash
   - view_unpublished
 config:
   strict: false
