@@ -18,11 +18,13 @@ install:
   - tour
   - trash
   - view_unpublished
+  - views_bulk_edit
 config:
   strict: false
   import:
     node:
       - views.view.content
+    views_bulk_edit: '*'
   actions:
     # Add some permissions to the Content editor role.
     user.role.content_editor:
