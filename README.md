@@ -8,3 +8,5 @@ Configures a rich editing experience for modern Drupal.
 * Creates a tour for the admin content screen.
 * Installs Access Unpublished. Permissions set on individual entity recipes.
 * Installs Quick Node Clone.
+* Installs Trash
+* Installs Views Bulk Edit
