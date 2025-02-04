@@ -28,8 +28,6 @@ config:
   actions:
     # Add some permissions to the Content editor role.
     user.role.content_editor:
-      createIfNotExists:
-        id: content_editor
       grantPermissions:
         - 'access content overview'
         - 'access contextual links'
