@@ -13,6 +13,7 @@ install:
   # Contrib.
   - access_unpublished
   - environment_indicator
+  - environment_indicator_ribbon
   - quick_node_clone
   - sam
   - tour
