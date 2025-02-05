@@ -31,4 +31,6 @@ config:
       grantPermissions:
         - 'access content overview'
         - 'access contextual links'
+        - 'access environment indicator'
+        - 'access environment indicator ribbon'
         - 'view any unpublished content'
