@@ -14,6 +14,7 @@ install:
   - access_unpublished
   - environment_indicator
   - environment_indicator_ribbon
+  - frontend_editing
   - quick_node_clone
   - sam
   - tour
