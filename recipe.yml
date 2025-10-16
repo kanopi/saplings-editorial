@@ -9,6 +9,7 @@ install:
   # Core.
   - contextual
   - node
+  - taxonomy
   - views
   # Contrib.
   - access_unpublished
@@ -26,6 +27,7 @@ config:
   import:
     node:
       - views.view.content
+    taxonomy: '*'
     views_bulk_edit: '*'
   actions:
     # Add some permissions to the Content editor role.
